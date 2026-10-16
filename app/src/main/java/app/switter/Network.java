@@ -21,8 +21,8 @@ public final class Network {
     public OkHttpClient client(Blog b) {
         String key=b.json().toString();
         return clients.computeIfAbsent(key,k->{
-            OkHttpClient.Builder x=new OkHttpClient.Builder().connectTimeout(20,TimeUnit.SECONDS)
-                .readTimeout(25,TimeUnit.SECONDS).callTimeout(40,TimeUnit.SECONDS)
+            OkHttpClient.Builder x=new OkHttpClient.Builder().connectTimeout(520,TimeUnit.SECONDS)
+                .readTimeout(525,TimeUnit.SECONDS).callTimeout(540,TimeUnit.SECONDS)
                 .retryOnConnectionFailure(false).followRedirects(false).followSslRedirects(false)
                 .cookieJar(new CookieJar(){
                     private final List<Cookie> jar=new ArrayList<>();
