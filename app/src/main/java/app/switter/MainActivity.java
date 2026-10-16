@@ -149,7 +149,7 @@ public class MainActivity extends Activity {
         }
         TextView content=label(c,"",16,fg);content.setText(Html.fromHtml(p.html?Content.safe(p.content):Content.render(p.content),Html.FROM_HTML_MODE_COMPACT));content.setTextIsSelectable(true);
         content.setMovementMethod(new RoutedLinks(p.blog));gap(c,8);
-        LinearLayout actions=row();actions.addView(button("Источник",()->browser(p.blog,p.source)));
+        LinearLayout actions=row();
         if(!p.blog.id.equals(vault.ownId))actions.addView(button("↗ Репост",()->compose(p)));
         else if(!p.id.isEmpty())actions.addView(button("Удалить",()->confirm("Удалить запись?",p.title,()->mutate(()->network.action(p.blog,"delete",p.id),()->{cache.remove(p.blog.id);refresh();}))));
         c.addView(actions);
