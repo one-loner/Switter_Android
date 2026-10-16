@@ -1,0 +1,13 @@
+Performing Streamed Install
+Success
+Performing Streamed Install
+Success
+
+app.switter.ClientTest:..................
+app.switter.DeviceTest:......
+
+Time: 17.781
+
+OK (24 tests)
+
+

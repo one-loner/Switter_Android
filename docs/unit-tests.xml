@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="app.switter.ClientTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2026-10-16T15:52:28" hostname="MacBook-Pro-Andrey.local" time="0.313">
+  <properties/>
+  <testcase name="unknownHtmlTriggersWebFallback" classname="app.switter.ClientTest" time="0.04"/>
+  <testcase name="imageUsesBlogSubdirectory" classname="app.switter.ClientTest" time="0.048"/>
+  <testcase name="invalidProxyIsRejected" classname="app.switter.ClientTest" time="0.001"/>
+  <testcase name="boundedReadsAndMime" classname="app.switter.ClientTest" time="0.001"/>
+  <testcase name="badDataFallsOut" classname="app.switter.ClientTest" time="0.0"/>
+  <testcase name="validationErrorIsNotSuccess" classname="app.switter.ClientTest" time="0.16"/>
+  <testcase name="jsonAndChronology" classname="app.switter.ClientTest" time="0.002"/>
+  <testcase name="timezoneIsApplied" classname="app.switter.ClientTest" time="0.0"/>
+  <testcase name="socksResolvesDestinationRemotely" classname="app.switter.ClientTest" time="0.003"/>
+  <testcase name="formattingEscapesAndSanitizes" classname="app.switter.ClientTest" time="0.005"/>
+  <testcase name="emptyBlogIsValid" classname="app.switter.ClientTest" time="0.0"/>
+  <testcase name="nativeHtmlParsing" classname="app.switter.ClientTest" time="0.001"/>
+  <testcase name="failedLoginIsNotSuccess" classname="app.switter.ClientTest" time="0.008"/>
+  <testcase name="fallsBackFromJsonToHtml" classname="app.switter.ClientTest" time="0.007"/>
+  <testcase name="proxyFailureNeverConnectsDirect" classname="app.switter.ClientTest" time="0.002"/>
+  <testcase name="arbitraryAdminPath" classname="app.switter.ClientTest" time="0.001"/>
+  <testcase name="refusesCredentialRedirect" classname="app.switter.ClientTest" time="0.007"/>
+  <testcase name="fullSessionCsrfAndMultipart" classname="app.switter.ClientTest" time="0.025"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
