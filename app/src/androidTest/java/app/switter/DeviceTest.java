@@ -15,7 +15,17 @@ public class DeviceTest {
     private final Instrumentation instrumentation=InstrumentationRegistry.getInstrumentation();
     private final Context context=instrumentation.getTargetContext();
     private Context isolated(){return new ContextWrapper(context){@Override public android.content.SharedPreferences getSharedPreferences(String name,int mode){return context.getSharedPreferences("device-test-"+name,mode);}};}
-    @Before public void reset(){context.getSharedPreferences("device-test-vault",0).edit().clear().commit();}
+    private String oldLocale;
+    @Before public void reset(){
+        oldLocale=android.os.Build.VERSION.SDK_INT>=33?context.getSystemService(android.app.LocaleManager.class).getApplicationLocales().toLanguageTags():context.getSharedPreferences("language",0).getString("tag","");
+        Languages.select(context,9);instrumentation.waitForIdleSync();
+        context.getSharedPreferences("device-test-vault",0).edit().clear().commit();
+    }
+    @After public void restoreLocale(){
+        if(android.os.Build.VERSION.SDK_INT>=33)context.getSystemService(android.app.LocaleManager.class).setApplicationLocales(android.os.LocaleList.forLanguageTags(oldLocale));
+        else context.getSharedPreferences("language",0).edit().putString("tag",oldLocale).commit();
+        instrumentation.waitForIdleSync();
+    }
     @Test public void keystoreRoundtripAndPin()throws Exception{
         Vault v=new Vault(isolated());Blog b=new Blog();b.name="Секретный блог";b.url="https://a.test/";b.password="secret-password";v.blogs.add(b);v.ownId=b.id;v.setPin("1593");
         String ciphertext=isolated().getSharedPreferences("vault",0).getString("data","");assertFalse(ciphertext.contains("secret-password"));assertFalse(ciphertext.contains("1593"));

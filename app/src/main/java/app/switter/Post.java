@@ -9,8 +9,9 @@ public final class Post {
         this.blog=b; this.id=id; this.title=title; this.content=content; this.image=image;
         this.source=source; this.timestamp=timestamp; this.html=html;
     }
-    public String repostText() {
-        return (html ? Content.markdown(content) : content) + "\n\n[Первоисточник: "
-            + blog.name.replace("[", "").replace("]", "") + "](" + source + ")";
+    public String repostText() { return repostText("Первоисточник"); }
+    public String repostText(String sourceLabel) {
+        return (html ? Content.markdown(content) : content) + "\n\n[" + sourceLabel + ": "
+            + blog.name.replace("[", "").replace("]", "") + "](" + (source.contains("#switter-post-")?source.substring(0,source.indexOf('#')):source) + ")";
     }
 }

@@ -62,6 +62,14 @@ public final class Network {
         try {return Content.html(b,get(b,b.url,MAX_PAGE).text());}
         catch(Exception e){throw new IOException("Не удалось прочитать записи. Доступен веб-режим. "+first.getMessage(),e);}
     }
+    public List<String> archives(Blog b) throws IOException {
+        Page page=get(b,b.base().resolve("archive/").toString(),MAX_PAGE);
+        return Content.archiveLinks(b,page.text(),page.url);
+    }
+    public List<Post> archive(Blog b,String url) throws IOException {
+        Page page=get(b,url,MAX_PAGE);
+        return Content.archive(b,page.text(),page.url);
+    }
     private String csrf(Blog b) throws IOException {
         HttpUrl admin=b.adminUrl();
         Document page=Jsoup.parse(get(b,admin.toString(),MAX_PAGE).text());

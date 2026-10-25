@@ -63,6 +63,47 @@ public final class Content {
         if(posts.isEmpty()) throw new IllegalArgumentException("Страница не распознана");
         return posts;
     }
+    /** Archive URLs are restricted to HTML files immediately inside this blog's archive directory. */
+    public static List<String> archiveLinks(Blog b,String raw,String pageUrl) {
+        HttpUrl directory=b.base().resolve("archive/");
+        LinkedHashSet<String> links=new LinkedHashSet<>();
+        for(Element a:Jsoup.parse(raw,pageUrl).select("a[href]")) {
+            HttpUrl u=HttpUrl.parse(a.absUrl("href"));
+            if(u==null || !Network.sameOrigin(directory,u) || !u.username().isEmpty() || !u.password().isEmpty())continue;
+            String path=u.encodedPath(),prefix=directory.encodedPath();
+            if(!path.startsWith(prefix))continue;
+            String file=path.substring(prefix.length());
+            if(file.isEmpty() || file.contains("/") || !file.toLowerCase(Locale.ROOT).endsWith(".html"))continue;
+            links.add(u.newBuilder().query(null).fragment(null).build().toString());
+        }
+        List<String> result=new ArrayList<>(links);result.sort(Comparator.reverseOrder());return result;
+    }
+    public static List<Post> archive(Blog b,String raw,String url) {
+        Document d=Jsoup.parse(raw,url);List<Post> posts=new ArrayList<>();int index=0;
+        for(Element a:d.select("article.post, article.p")) {
+            Element h=a.selectFirst("h2");if(h==null)continue;
+            Element image=a.selectFirst("img[src]");String img=image==null?"":image.absUrl("src");
+            if(!img.isEmpty())Blog.requireUrl(img);
+            Element body=a.selectFirst("p.pg");
+            StringBuilder content=new StringBuilder();
+            if(body!=null)content.append(body.html());
+            else for(Element paragraph:a.select("p"))content.append(paragraph.outerHtml());
+            String source=Blog.requireUrl(url).newBuilder().fragment("switter-post-"+(index++)).build().toString();
+            // Upstream archives omit original post dates and IDs. Do not invent dates or allow deletion.
+            posts.add(new Post(b,"",h.text(),safe(content.toString()),img,source,0,true));
+        }
+        if(posts.isEmpty()&&!d.select("article").isEmpty())throw new IllegalArgumentException("Страница не распознана");
+        return posts;
+    }
+    public static List<Post> search(Collection<List<Post>> groups,String query) {
+        String needle=java.text.Normalizer.normalize(query.trim(),java.text.Normalizer.Form.NFKC).toLowerCase(Locale.ROOT);
+        List<Post> result=new ArrayList<>();
+        for(Post post:timeline(groups)) {
+            String text=post.title+"\n"+Jsoup.parse(post.html?post.content:render(post.content)).text();
+            if(java.text.Normalizer.normalize(text,java.text.Normalizer.Form.NFKC).toLowerCase(Locale.ROOT).contains(needle))result.add(post);
+        }
+        return result;
+    }
     public static List<Post> timeline(Collection<List<Post>> groups) {
         List<Post> all=new ArrayList<>(); Set<String> seen=new HashSet<>();
         for(List<Post> group:groups) for(Post p:group) {

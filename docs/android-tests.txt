@@ -1,13 +1,11 @@
-Performing Streamed Install
-Success
-Performing Streamed Install
-Success
 
+app.switter.ArchiveSearchTest:......
 app.switter.ClientTest:..................
 app.switter.DeviceTest:......
+app.switter.FeatureDeviceTest:..
 
-Time: 17.781
+Time: 75.355
 
-OK (24 tests)
+OK (32 tests)
 
 
